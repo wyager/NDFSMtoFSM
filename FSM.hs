@@ -8,7 +8,6 @@ module FSM (
 import State (Token(..), State(..), TransitionFunction(..), Transition(..), TransitionMap)
 import Data.Set as Set (Set, elems, member)
 import Data.Map as Map (Map, (!), empty, insert, singleton, member)
-import Debug.Trace (trace)
 
 data FSM = FSM {states :: Set State, state0 :: State, accepting :: Set State, 
 					transitionFunction :: TransitionFunction, alphabet :: Set Token}
@@ -31,6 +30,6 @@ mapToFunc m a b = (m ! a) ! b
 accepts :: FSM -> [Token] -> Bool
 fsm `accepts` string = accepts' fsm (state0 fsm) string
 accepts' :: FSM -> State -> [Token] -> Bool
-accepts' fsm state [] = (show $ state) `trace` state `Set.member` (accepting fsm)
+accepts' fsm state [] = state `Set.member` (accepting fsm)
 accepts' fsm state (t:tt) = accepts' fsm state' tt
 	where state' = transitionFunction fsm state t
